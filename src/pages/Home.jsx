@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import API_BASE from "./config";
+import API_BASE_URL from "../config";
+
 export default function Home() {
   const [colleges, setColleges] = useState([]);  // must be an array
   const [query, setQuery] = useState("");
@@ -13,7 +14,7 @@ export default function Home() {
     setLoading(true);
     setError(null);
 
-    fetch(`${API_BASE}//colleges?q=${query}&page=${page}&per_page=5`)
+    fetch(`${API_BASE_URL}//colleges?q=${query}&page=${page}&per_page=5`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch colleges");
         return res.json();
