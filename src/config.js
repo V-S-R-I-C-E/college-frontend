@@ -1,5 +1,2 @@
-const API_BASE =
-  import.meta.env.MODE === "development"
-    ? "http://localhost:5000"
-    : "https://college-backend.onrender.com"; 
-export default API_BASE;
+const API_BASE_URL = "https://college-backend-v.onrender.com"; 
+export default API_BASE_URL;
