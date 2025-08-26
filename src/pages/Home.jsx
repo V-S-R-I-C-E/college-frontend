@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import CollegeCard from "../components/CollegeCard";
-import API_BASE from "../config";
+import API_BASE_URL from "../config";
+
 
 export default function Home() {
   const [colleges, setColleges] = useState([]);
@@ -9,7 +10,7 @@ export default function Home() {
   const perPage = 10;
 
   useEffect(() => {
-    fetch(`${API_BASE}/colleges`)
+    fetch(`${API_BASE_URL}/colleges`)
       .then((res) => res.json())
       .then((data) => setColleges(data))
       .catch((err) => console.error("Error fetching colleges:", err));
