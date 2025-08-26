@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-
+import API_BASE from "./config";
 export default function CollegeDetail() {
   const { id } = useParams();
   const [college, setCollege] = useState(null);
@@ -11,7 +11,7 @@ export default function CollegeDetail() {
     setLoading(true);
     setError(null);
 
-    fetch(`http://localhost:5000/college/${id}`)
+    fetch(`${API_BASE}/college/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch college details");
         return res.json();
