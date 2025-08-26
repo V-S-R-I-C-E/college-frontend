@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import API_BASE from "../config";
+import API_BASE_URL from "../config";
+
 
 export default function CollegeDetail() {
   const { id } = useParams();
   const [college, setCollege] = useState(null);
 
   useEffect(() => {
-    fetch(`${API_BASE}/college/${id}`)
+    fetch(`${API_BASE_URL}/college/${id}`)
       .then((res) => res.json())
       .then((data) => setCollege(data))
       .catch((err) => console.error("Error fetching college:", err));
@@ -18,7 +19,7 @@ export default function CollegeDetail() {
   return (
     <div className="p-4">
       <img
-        src={`${API_BASE}${college.image}`}
+        src={`${API_BASE_URL}${college.image}`}
         alt={college.name}
         className="w-full h-64 object-cover rounded-xl shadow-md mb-4"
       />
