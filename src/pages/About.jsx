@@ -1,15 +1,11 @@
 export default function About() {
   return (
-    <div className="prose">
-      <h1>About This Website</h1>
-      <p>
-        This is a simple college directory website. You can search colleges by
-        name or location, browse a paginated list, and view details including
-        courses offered.
-      </p>
-      <p>
-        The website is built using React + TailwindCSS on the frontend and Flask
-        on the backend to serve data and images.
+    <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4">About This Website</h2>
+      <p className="text-gray-700 leading-relaxed">
+        This website is a searchable and filterable directory of colleges.
+        You can browse colleges by name or location, view their descriptions,
+        see available courses, and explore their details.
       </p>
     </div>
   );
