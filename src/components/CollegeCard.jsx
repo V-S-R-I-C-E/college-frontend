@@ -1,11 +1,10 @@
 import { Link } from "react-router-dom";
-import API_BASE from "../config";
-
+import API_BASE_URL from "../config";
 export default function CollegeCard({ college }) {
   return (
     <div className="border rounded-xl shadow hover:shadow-lg transition p-4 bg-white">
       <img
-        src={`${API_BASE}${college.image}`}
+        src={`${API_BASE_URL}${college.image}`}
         alt={college.name}
         className="w-full h-40 object-cover rounded-lg mb-3"
       />
