@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import API_BASE from "./config";
+import API_BASE_URL from "../config";
+
 export default function CollegeDetail() {
   const { id } = useParams();
   const [college, setCollege] = useState(null);
@@ -11,7 +12,7 @@ export default function CollegeDetail() {
     setLoading(true);
     setError(null);
 
-    fetch(`${API_BASE}/college/${id}`)
+    fetch(`${API_BASE_URL}/college/${id}`)
       .then((res) => {
         if (!res.ok) throw new Error("Failed to fetch college details");
         return res.json();
@@ -40,7 +41,7 @@ export default function CollegeDetail() {
       {/* Image (only show if exists) */}
       {college.image && (
         <img
-          src={`http://localhost:5000/static/${college.image}`}
+          src={`${API_BASE_URL}/${college.image}`}
           alt={college.name}
           className="rounded-lg mb-4 w-full h-60 object-cover"
         />
