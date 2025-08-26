@@ -1,93 +1,61 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import API_BASE_URL from "../config";
+import CollegeCard from "../components/CollegeCard";
+import API_BASE from "../config";
 
 export default function Home() {
-  const [colleges, setColleges] = useState([]);  // must be an array
-  const [query, setQuery] = useState("");
+  const [colleges, setColleges] = useState([]);
+  const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const perPage = 10;
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
+    fetch(`${API_BASE}/colleges`)
+      .then((res) => res.json())
+      .then((data) => setColleges(data))
+      .catch((err) => console.error("Error fetching colleges:", err));
+  }, []);
 
-    fetch(`${API_BASE_URL}//colleges?q=${query}&page=${page}&per_page=5`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch colleges");
-        return res.json();
-      })
-      .then((data) => {
-        setColleges(Array.isArray(data.results) ? data.results : []);
-        setTotal(data.total || 0);
-      })
-      .catch((err) => {
-        console.error("Fetch error:", err);
-        setError("Could not load colleges. Please try again.");
-      })
-      .finally(() => setLoading(false));
-  }, [query, page]);
+  const filtered = colleges.filter(
+    (c) =>
+      c.name.toLowerCase().includes(search.toLowerCase()) ||
+      c.location.toLowerCase().includes(search.toLowerCase())
+  );
+
+  const totalPages = Math.ceil(filtered.length / perPage);
+  const paginated = filtered.slice((page - 1) * perPage, page * perPage);
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-4">Colleges</h1>
-
-      {/* Search */}
+    <div className="p-4">
       <input
         type="text"
-        placeholder="Search colleges..."
-        className="border p-2 rounded mb-4 w-full"
-        value={query}
+        placeholder="Search by name or location..."
+        className="border p-2 rounded w-full mb-4"
+        value={search}
         onChange={(e) => {
-          setQuery(e.target.value);
-          setPage(1); // reset to page 1 when searching
+          setSearch(e.target.value);
+          setPage(1);
         }}
       />
 
-      {/* Error / Loading states */}
-      {loading && <p>Loading...</p>}
-      {error && <p className="text-red-500">{error}</p>}
-
-      {/* College list */}
-      <ul className="space-y-2">
-        {colleges.map((college) => (
-          <li
-            key={college.id}
-            className="border rounded p-3 hover:bg-gray-50 transition"
-          >
-            <Link to={`${API_BASE}/college/${college.id}`} className="text-blue-600">
-              {college.name}
-            </Link>
-          </li>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {paginated.map((college) => (
+          <CollegeCard key={college.id} college={college} />
         ))}
-      </ul>
-
-      {/* No results */}
-      {!loading && colleges.length === 0 && !error && (
-        <p className="text-gray-500">No colleges found.</p>
-      )}
+      </div>
 
       {/* Pagination */}
-      <div className="flex gap-2 mt-4 items-center">
-        <button
-          disabled={page === 1}
-          onClick={() => setPage((p) => p - 1)}
-          className="px-3 py-1 border rounded disabled:opacity-50"
-        >
-          Prev
-        </button>
-        <span>
-          Page {page} of {Math.max(1, Math.ceil(total / 5))}
-        </span>
-        <button
-          disabled={page >= Math.ceil(total / 5)}
-          onClick={() => setPage((p) => p + 1)}
-          className="px-3 py-1 border rounded disabled:opacity-50"
-        >
-          Next
-        </button>
+      <div className="flex justify-center mt-6 space-x-2">
+        {Array.from({ length: totalPages }, (_, i) => (
+          <button
+            key={i}
+            onClick={() => setPage(i + 1)}
+            className={`px-3 py-1 rounded ${
+              page === i + 1 ? "bg-blue-500 text-white" : "bg-gray-200"
+            }`}
+          >
+            {i + 1}
+          </button>
+        ))}
       </div>
     </div>
   );
