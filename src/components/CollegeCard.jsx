@@ -1,20 +1,21 @@
 import { Link } from "react-router-dom";
+import API_BASE from "../config";
 
 export default function CollegeCard({ college }) {
   return (
-    <div className="bg-white shadow-lg rounded-xl p-4">
+    <div className="border rounded-xl shadow hover:shadow-lg transition p-4 bg-white">
       <img
-        src={`http://localhost:5000${college.image}`}
+        src={`${API_BASE}${college.image}`}
         alt={college.name}
-        className="rounded-lg mb-3 w-full h-40 object-cover"
+        className="w-full h-40 object-cover rounded-lg mb-3"
       />
-      <h2 className="text-xl font-semibold">{college.name}</h2>
+      <h3 className="text-lg font-bold">{college.name}</h3>
       <p className="text-gray-600">{college.location}</p>
       <Link
         to={`/college/${college.id}`}
-        className="mt-3 inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+        className="inline-block mt-2 text-blue-500 hover:underline"
       >
-        View Details
+        View Details →
       </Link>
     </div>
   );
